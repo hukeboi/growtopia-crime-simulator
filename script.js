@@ -122,7 +122,7 @@ for (let i = 0; i < 20; i++){
     b.appendChild(img);
     let text = document.createElement("div");
     text.innerText = GetNameFromID((i + 1));
-    text.classList.add("name")
+    text.classList.add("text")
     b.appendChild(text);
     b.addEventListener("click", function() {
         if (pSelected.includes(i + 1)){
@@ -138,6 +138,7 @@ for (let i = 0; i < 20; i++){
                 document.getElementById("start").disabled = false;
             }
         }
+        document.getElementById("me-card-title").innerText = "Select your cards: (" + pSelected.length + "/5)"
     })
     document.getElementById("my-cards").appendChild(b);
 
@@ -152,7 +153,7 @@ for (let i = 0; i < 20; i++){
     b2.appendChild(img2);
     let text2 = document.createElement("div");
     text2.innerText = GetNameFromID((i + 1));
-    text2.classList.add("name")
+    text2.classList.add("text")
     b2.appendChild(text2);
     b2.addEventListener("click", function() {
         if (eSelected.includes(i + 1)){
@@ -168,6 +169,7 @@ for (let i = 0; i < 20; i++){
                 document.getElementById("start").disabled = false;
             }
         }
+        document.getElementById("bot-card-title").innerText = "Select bot cards: (" + eSelected.length + "/5)"
     })
     document.getElementById("bot-cards").appendChild(b2);
 }
@@ -180,7 +182,7 @@ img.classList.add("cardImg");
 b.appendChild(img);
 let text = document.createElement("div");
 text.innerText = "Random cards";
-text.classList.add("name")
+text.classList.add("text")
 b.appendChild(text);
 b.addEventListener("click", function() {
     if (eSelected.includes("x")){
@@ -196,6 +198,7 @@ b.addEventListener("click", function() {
             document.getElementById("start").disabled = false;
         }
     }
+    document.getElementById("bot-card-title").innerText = "Select bot cards: (" + eSelected.length + "/5)"
 })
 document.getElementById("bot-cards").appendChild(b);
 
@@ -203,7 +206,10 @@ document.getElementById("bot-cards").appendChild(b);
 document.getElementById("start").addEventListener("click", function() {
     if (eSelected.includes("x")){
         eSelected.splice(1, 4);
+    } else {
+        eSelected.sort(function(a, b){return a-b});
     }
+    pSelected.sort(function(a, b){return a-b});
     let cards = pSelected.toString() + "_" + eSelected.toString();
     cards = cards.replaceAll(",", "_");
     let hp = document.getElementById("hp-me").value + "_" + document.getElementById("hp-bot").value;

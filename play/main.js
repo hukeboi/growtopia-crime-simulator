@@ -188,10 +188,28 @@ function CheckHp(who){
         }
         who.effects.splice(removeIndex, 1);
     } else {
-        if (enemy.health <= 0){
+        if (enemy.health <= 0 && GameOn){
+            GameOn = false;
+            for (let i = 0; i < cardButtons.length; i++){
+                cardButtons[i].disabled = true;
+                cardButtons[i].firstChild.classList.add("disabled");
+                cardButtons[i].classList.remove("active");
+            }
+            document.getElementById("not").disabled = true;
+            document.getElementById("end").style = "display: inherit;";
+            
             console.log("YOU WON!!!!")
         }
-        if (me.health <= 0){
+        if (me.health <= 0 && GameOn){
+            GameOn = false;
+            for (let i = 0; i < cardButtons.length; i++){
+                cardButtons[i].disabled = true;
+                cardButtons[i].firstChild.classList.add("disabled");
+                cardButtons[i].classList.remove("active");
+            }
+            document.getElementById("not").disabled = true;
+            document.getElementById("end").style = "display: inherit;";
+            document.getElementById("end").childNodes[1].textContent = "You lost...";
             console.log("YOU LOST!!!!")
         }
     }
@@ -304,6 +322,7 @@ let enemy = {
 let waitForInput = false;
 let enemyNextCard = 0;
 let cardButtons = [];
+let GameOn = true;
 
 function DealDamage(amount, card, opponentCard){
     let opponent = card.opponent;
@@ -378,7 +397,7 @@ function DealDamage(amount, card, opponentCard){
 }
 
 function processCard(card, opponentCard, trueid){
-    let newEffect = [[], []];
+    let newEffect = [[], [], ""];
 
     if (HasEffect(card.user, 7) && GetTypeFromID(card.id) !== "fire"){
         console.log("Blocked by Frost Breath")
@@ -427,9 +446,13 @@ function processCard(card, opponentCard, trueid){
             break;
         case 10:
             DealDamage(1, card, opponentCard);
-            if ([1, 2, 4].includes(trueid)){
+            if ([1, 2, 4].includes(trueid) && HasEffect(card.opponent, 5)){
                 processCard({id: trueid, user: card.user, opponent: card.opponent}, {id: -99, user: card.opponent, opponent: card.user})
-                console.log("Card deflected by Frozen Mirror")
+                if (card.user === me){
+                    newEffect[2] = "!2The !2enemy thaws out by using a !3Fire card! !1Your !4Frozen !4Mirror reflected !2the !2enemy's " + GetColoredNameFromID(trueid) + "!";
+                } else {
+                    newEffect[2] = "!1You thaw out by using a !3Fire card! !2The !2enemy's !4Frozen !4Mirror reflected !1your " + GetColoredNameFromID(trueid) + "!";
+                }
             }
             break;
         case 11:
@@ -519,21 +542,25 @@ function useCards(cardObj1, cardObj2){
             obj2Effect = processCard(cardObj2, cardObj1, cardObj1.id);
             obj1Effect = processCard(cardObj1, cardObj2, cardObj2.id);
         } else {
-            switch (GetTypeFromID(cardObj1.id)){
-                case "fire":
-                    Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " scoraches !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
-                    break;
-                case "ice":
-                    Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " freezes !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
-                    break;
-                case "muscle":
-                    Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " pummels !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
-                    break;
-                case "lightning":
-                    Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " shocks !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
-                    break;
-            }
             obj1Effect = processCard(cardObj1, {id: -99, user: enemy, opponent: me}, cardObj2.id);
+            if (obj1Effect[2].length !== 0){
+                Inform(obj1Effect[2], 0);
+            } else {
+                switch (GetTypeFromID(cardObj1.id)){
+                    case "fire":
+                        Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " scoraches !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
+                        break;
+                    case "ice":
+                        Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " freezes !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
+                        break;
+                    case "muscle":
+                        Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " pummels !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
+                        break;
+                    case "lightning":
+                        Inform("!1Your " + GetColoredNameFromID(cardObj1.id) + " shocks !2the !2enemy, stopping " + GetColoredNameFromID(cardObj2.id) + " from working.", 0);
+                        break;
+                }
+            }
             
         }    
 
@@ -543,28 +570,36 @@ function useCards(cardObj1, cardObj2){
             obj1Effect = processCard(cardObj1, cardObj2, cardObj2.id);
             obj2Effect = processCard(cardObj2, cardObj1, cardObj1.id);
         } else {
-            switch (GetTypeFromID(cardObj2.id)){
-                case "fire":
-                    Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " scoraches !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
-                    break;
-                case "ice":
-                    Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " freezes !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
-                    break;
-                case "muscle":
-                    Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " pummels !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
-                    break;
-                case "lightning":
-                    Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " shocks !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
-                    break;
-            }    
             obj2Effect = processCard(cardObj2, {id: -99, user: me, opponent: enemy}, cardObj1.id);
+            if (obj2Effect[2].length !== 0){
+                Inform(obj1Effect[2], 0);
+            } else {
+                switch (GetTypeFromID(cardObj2.id)){
+                    case "fire":
+                        Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " scoraches !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
+                        break;
+                    case "ice":
+                        Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " freezes !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
+                        break;
+                    case "muscle":
+                        Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " pummels !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
+                        break;
+                    case "lightning":
+                        Inform("!2The !2enemy's " + GetColoredNameFromID(cardObj2.id) + " shocks !1you, stopping " + GetColoredNameFromID(cardObj1.id) + " from working.", 0);
+                        break;
+                }
+            }
         }
 
     } else {
         //process 1 and 2
-        Inform("!1You use " + GetColoredNameFromID(cardObj1.id) + " while !2the !2enemy uses " + GetColoredNameFromID(cardObj2.id), 0)
         obj1Effect = processCard(cardObj1, cardObj2, cardObj2.id);
         obj2Effect = processCard(cardObj2, cardObj1, cardObj1.id);
+        if (obj1Effect[2].length !== 0){
+            Inform(obj1Effect[2], 0);
+        } else {
+            Inform("!1You use " + GetColoredNameFromID(cardObj1.id) + " while !2the !2enemy uses " + GetColoredNameFromID(cardObj2.id), 0)
+        }
     }
     
     if (cardObj1.id === 15){
@@ -708,15 +743,17 @@ function useCards(cardObj1, cardObj2){
     }
     
     //update ui buttons
-    for (let i = 0; i < cardButtons.length; i++){
-        if (me.unavailableCards.includes(me.cards[i]) || me.permanentlyDisabled === me.cards[i] || me.megawatt === me.cards[i] || (me.cards[i] === 12 && me.playedCards[1] === 12) || (HasEffect(me, 7) && GetTypeFromID(me.cards[i]) !== "fire")){
-            cardButtons[i].disabled = true;
-            cardButtons[i].firstChild.classList.add("disabled");
-            cardButtons[i].classList.remove("active");
-        } else {
-            cardButtons[i].disabled = false;
-            cardButtons[i].firstChild.classList.remove("disabled");
-            cardButtons[i].classList.add("active");
+    if (GameOn){
+        for (let i = 0; i < cardButtons.length; i++){
+            if (me.unavailableCards.includes(me.cards[i]) || me.permanentlyDisabled === me.cards[i] || me.megawatt === me.cards[i] || (me.cards[i] === 12 && me.playedCards[1] === 12) || (HasEffect(me, 7) && GetTypeFromID(me.cards[i]) !== "fire")){
+                cardButtons[i].disabled = true;
+                cardButtons[i].firstChild.classList.add("disabled");
+                cardButtons[i].classList.remove("active");
+            } else {
+                cardButtons[i].disabled = false;
+                cardButtons[i].firstChild.classList.remove("disabled");
+                cardButtons[i].classList.add("active");
+            }
         }
     }
 

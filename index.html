@@ -9,24 +9,24 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>Growtopia Crime/Villain simulator</h1>
+        <h1 class="text">Growtopia Crime/Villain simulator</h1>
         <div class="card-container">
-            <div class="cards">
-              <h3 class="title">Selet your cards:</h3>
+            <div class="cards text">
+              <h3 class="title" id="me-card-title">Select your cards: (0/5)</h3>
               <div id="my-cards"></div>
               Health:
               <input class="hp" type="number" id="hp-me" name="quantity" min="1" max="20" value="8">
             </div>
-            <div class="cards">
-              <h3 class="title">Select bot cards:</h3>
+            <div class="cards text">
+              <h3 class="title" id="bot-card-title">Select bot cards: (0/5)</h3>
               <div id="bot-cards"></div>
               Health:
               <input class="hp" type="number" id="hp-bot" name="quantity" min="1" max="20" value="8">
             </div>
           </div>
           <button id="start" disabled="true">Start</button>
-          <p>NOTE: As the exact behaviour of the ai is unknown, the simulator doesnt reflect actual ingame ai 100% correctly. If you spot any bugs or weird behaviour feel free to report them to me by messaging me in discod! Im currently improving the ai according to the information on wiki.</p>
-          <p>Made by huge (Ingame: HugeG, Discord: qhuge)</p>
+          <p class="text">NOTE: As the exact behaviour of the ai is unknown, the simulator doesnt reflect actual ingame ai 100% correctly. If you spot any bugs or weird behaviour feel free to report them to me by messaging me in discod! Im currently improving the ai according to the information on wiki.</p>
+          <p class="text">Made by huge (Ingame: HugeG, Discord: qhuge)</p>
         <script src="script.js"></script>
     </body>
 </html>

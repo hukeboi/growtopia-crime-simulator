@@ -7,18 +7,28 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="play/styles.css">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <p class="header" id="header"></p>
-        <p class="hp text" id="hp-me"><span class="you">You</span> - Life: 0/0</p>
-        <div id="player-fx">
+        <div id="game">
+            <p class="header" id="header"></p>
+            <p class="hp text" id="hp-me"><span class="you">You</span> - Life: 0/0</p>
+            <div id="player-fx">
+            </div>
+            <p class="hp text" id="hp-bot"><span class="enemy">Enemy</span> - Life: 0/0</p>
+            <div id="bot-fx">
+            </div>
+            <p class="text" id="ss" style="margin-top: 40px;"></p>
+            <div id="allbuttons"></div>
+            <button class="btn" id="not" style="margin-top: 1%">Do Nothing</button>
         </div>
-        <p class="hp text" id="hp-bot"><span class="enemy">Enemy</span> - Life: 0/0</p>
-        <div id="bot-fx">
+        <div id="end" style="display: none">
+            <h4 class="text header" style="margin-left: 5%">You won!</h4>
+            <p class="text"style="margin-left: 5%; margin-right: 5%;">Remember that this simulator might not reflect actual behaviour of the different bots in the game.</p>
+            <button class="btn" onclick="window.location.reload()" style="margin-left: 5%">Play again</button>
+            <button class="btn" onclick="window.location.href='/'" style="margin-bottom: 5%">Back to menu</button>
         </div>
-        <p class="text" id="ss" style="margin-top: 40px;"></p>
-        <div id="allbuttons"></div>
-        <button class="nothing" id="not">Do Nothing</button>
-        <script src="play/script.js"></script>
+        <script src="play/main.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>

@@ -1,9 +1,7 @@
 ﻿h1{
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
 }
 .card-container {
-    border: 3px solid #fff;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -69,4 +67,12 @@
 .hp{
     width: 10%;
     display:inline-block;
+}
+body{
+    background-color: #3892aa;
+}
+.text {
+    font-family: Century Gothic;
+    font-weight: bold;
+    color: rgb(236, 233, 193);
 }
