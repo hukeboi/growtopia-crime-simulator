@@ -33,3 +33,15 @@
     transform: translateY(-4vh);
     margin-left: 5px;
 }
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #242424;
+        color: white;
+    }
+    .search-box{
+        background-color:#444;
+        outline: rgb(76, 76, 76);
+        outline-style: solid;
+        outline-width: 3px;
+    }
+}
