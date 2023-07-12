@@ -43,5 +43,6 @@
         outline: rgb(76, 76, 76);
         outline-style: solid;
         outline-width: 3px;
+        border: none;
     }
 }
