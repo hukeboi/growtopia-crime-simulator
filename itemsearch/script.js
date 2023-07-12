@@ -80,7 +80,7 @@ document.getElementById("item").addEventListener("input", function() {
     document.getElementById("len").innerText = document.getElementById("item").value.length;
 })
 document.getElementById("item").addEventListener("keypress", function(event) {
-    if (event.key === "Enter" && (document.getElementById("item").hasFocus() || document.getElementById("item").hasFocus())) {
+    if (event.key === "Enter" && (document.getElementById("item") === document.activeElement || document.getElementById("item") === document.activeElement)) {
         event.preventDefault();
         document.getElementById("search-button").click();
     }
